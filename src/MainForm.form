@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="MainForm">
-  <grid id="27dc6" binding="mainFormPanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="mainFormPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="9" y="18" width="989" height="2198"/>
+      <xy x="9" y="18" width="999" height="2198"/>
     </constraints>
     <properties>
       <background color="-11907505"/>
       <foreground color="-3618616"/>
+      <visible value="true"/>
     </properties>
     <border type="none"/>
     <children>
       <grid id="5e5bd" binding="createDatabaseMain" layout-manager="GridLayoutManager" row-count="10" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="634" height="134"/>
           </grid>
         </constraints>
@@ -172,7 +173,7 @@
       <grid id="63007" binding="loadDatabaseMain" layout-manager="GridLayoutManager" row-count="9" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-14803426"/>
@@ -309,11 +310,11 @@
       <grid id="9afad" binding="welcomeMain" layout-manager="GridLayoutManager" row-count="7" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-14803426"/>
-          <focusCycleRoot value="true"/>
+          <focusCycleRoot value="false"/>
           <visible value="false"/>
         </properties>
         <border type="none"/>
@@ -395,7 +396,7 @@
         <properties>
           <autoscrolls value="true"/>
           <background color="-14803426"/>
-          <enabled value="false"/>
+          <enabled value="true"/>
           <foreground color="-3618616"/>
           <visible value="true"/>
         </properties>
@@ -796,6 +797,165 @@
             <properties>
               <foreground color="-3618616"/>
               <text value="Name:"/>
+            </properties>
+          </component>
+          <component id="c85ee" class="javax.swing.JButton" binding="btnSettings_Manage">
+            <constraints>
+              <grid row="0" column="18" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14803426"/>
+              <borderPainted value="false"/>
+              <focusable value="false"/>
+              <icon value="settings-24.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="1e469" binding="settingsMain" layout-manager="GridLayoutManager" row-count="10" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-14803426"/>
+          <visible value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="9b8" class="javax.swing.JLabel" binding="labelNewPassword_Settings">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-3618616"/>
+              <requestFocusEnabled value="false"/>
+              <text value="New Password:"/>
+            </properties>
+          </component>
+          <component id="7750b" class="javax.swing.JPasswordField" binding="pwdPassword_Settings">
+            <constraints>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-11710125"/>
+              <disabledTextColor color="-3618616"/>
+              <font style="1"/>
+              <foreground color="-3618616"/>
+            </properties>
+          </component>
+          <hspacer id="5c4aa">
+            <constraints>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="b8ffe">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <vspacer id="f46ea">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <vspacer id="82f4">
+            <constraints>
+              <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <component id="229" class="javax.swing.JLabel" binding="labelCurrentPassword_Settings">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-3618616"/>
+              <text value="Current Password:"/>
+            </properties>
+          </component>
+          <component id="36e97" class="javax.swing.JPasswordField" binding="pwdCurrentPassword_Settings">
+            <constraints>
+              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-11710125"/>
+              <disabledTextColor color="-3618616"/>
+              <font style="1"/>
+              <foreground color="-3618616"/>
+            </properties>
+          </component>
+          <component id="f0d78" class="javax.swing.JLabel" binding="frameLabel_Settings">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font size="48"/>
+              <foreground color="-3618616"/>
+              <requestFocusEnabled value="true"/>
+              <text value="Database Settings"/>
+            </properties>
+          </component>
+          <vspacer id="d2d55">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <component id="5ced3" class="javax.swing.JButton" binding="btnBack_Settings">
+            <constraints>
+              <grid row="8" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14803426"/>
+              <focusable value="false"/>
+              <icon value="back-24.png"/>
+              <selected value="true"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <vspacer id="a6f0b">
+            <constraints>
+              <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <component id="cc080" class="javax.swing.JPasswordField" binding="pwdConfirm_Settings">
+            <constraints>
+              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-11710125"/>
+              <disabledTextColor color="-3618616"/>
+              <font style="1"/>
+              <foreground color="-3618616"/>
+            </properties>
+          </component>
+          <component id="7701" class="javax.swing.JLabel" binding="labelConfirmNewPassword_Settings">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <focusable value="false"/>
+              <foreground color="-3618616"/>
+              <text value="Confirm New Password:"/>
+            </properties>
+          </component>
+          <component id="875d2" class="javax.swing.JButton" binding="btnSavePassword_Settings">
+            <constraints>
+              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-11710125"/>
+              <borderPainted value="false"/>
+              <focusPainted value="true"/>
+              <focusable value="false"/>
+              <foreground color="-3618616"/>
+              <text value="Save Password"/>
             </properties>
           </component>
         </children>

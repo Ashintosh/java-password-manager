@@ -14,23 +14,14 @@ public class Database {
 
     public Database () {
         List<Entry> rootEntries = new ArrayList<>();
-        //List<Entry> testEntries = new ArrayList<>();
-        groupNames = new ArrayList<>();
 
+        groupNames = new ArrayList<>();
         groupNames.add("root");
 
         rootEntries.add(new Entry("New Entry", "", "", "", "", ""));
-        //rootEntries.add(new Entry("John Doe Login", "www.johndoe.com", "johndoe12", "password123", "johndoe@email.com", ":)"));
-        //rootEntries.add(new Entry("Jane Doe Login", "www.janedoe.com", "janedoe34", "password456", "janedoe@email.com", ";)"));
-
-        //groupNames.add("test");
-
-        //testEntries.add(new Entry("Jay Doe Login", "www.jaydoe.com", "jaydoe12", "password123", "jaydoe@email.com", "8)"));
-        //testEntries.add(new Entry( "Jayden Doe Login", "www.jaydendoe.com", "jaydendoe34", "password456", "jaydendoe@email.com", "[])"));
 
         groups = new ArrayList<>();
         groups.add(rootEntries);
-        //groups.add(testEntries);
     }
 
     ///// Get Functions ///// <editor-fold desc="~Get Functions~">

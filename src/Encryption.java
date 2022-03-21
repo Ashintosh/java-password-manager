@@ -4,6 +4,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +33,7 @@ public class Encryption {
     }
 
     ///// decryptString() ///// <editor-fold desc="~decryptString()~">
-    public String decryptString (String cText) throws Exception {
+    public String decryptString (String cText) {
         try {
             byte[] cTextBytes = Base64.getDecoder().decode(cText);
             ByteBuffer buffer = ByteBuffer.wrap(cTextBytes);
@@ -53,12 +54,14 @@ public class Encryption {
             byte[] decryptedText = cipher.doFinal(cipherText);
 
             return new String(decryptedText);
-        } catch (Exception e) { return null; }
+        } catch (Exception e) {
+            return null;
+        }
     }
     ///// End decryptString() ///// </editor-fold>
 
     ///// encryptString() ///// <editor-fold desc="~encryptString()~">
-    public String encryptString (String pText) throws Exception {
+    public String encryptString (String pText) {
         try {
             SecureRandom secureRandom = new SecureRandom();
             byte[] iv = new byte[IV_LENGTH_BYTE];
@@ -77,7 +80,29 @@ public class Encryption {
                     .put(cipherText)
                     .array();
             return Base64.getEncoder().encodeToString(ivText);
-        } catch (Exception e) { return null; }
+        } catch (Exception e) {
+            return null;
+        }
     }
     ///// End encryptString() ///// </editor-fold>
+
+    ///// toSha256() ///// <editor-fold desc="~toSha256()~">
+    public static String toSha256 (String pText) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = messageDigest.digest(pText.getBytes(StandardCharsets.UTF_8));
+
+            BigInteger number = new BigInteger(1, hashBytes);
+            StringBuilder hexString = new StringBuilder(number.toString(16));
+
+            while (hexString.length() < 32) {
+                hexString.insert(0, '0');
+            }
+
+            return hexString.toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    ///// End toSha256() ///// </editor-fold>
 }
