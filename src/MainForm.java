@@ -94,18 +94,18 @@ public class MainForm extends JFrame {
     ///// End Manage Panel Vars ///// </editor-fold>
 
     public MainForm () {
-        super("Secure Password Manager");
-        setContentPane(mainFormPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(870, 500);
-        setResizable(false);
-        setVisible(true);
-        createDatabaseMain.setVisible(false);
-        loadDatabaseMain.setVisible(false);
-        manageDatabaseMain.setVisible(false);
-        welcomeMain.setVisible(true);
+        super("Secure Password Manager");                 // Set window title
+        setContentPane(mainFormPanel);                        // Set current content pane to mainFormPanel
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       // Set default close option to close on window exit
+        setSize(870, 500);                       // Set window size to 870x500
+        setResizable(false);                                 // Disable resizable window
+        setVisible(true);                                    // Show window
+        createDatabaseMain.setVisible(false);                // Hide create database panel
+        loadDatabaseMain.setVisible(false);                  // Hide load database panel
+        manageDatabaseMain.setVisible(false);                // Hide manage database panel
+        welcomeMain.setVisible(true);                        // Show welcome panel
 
-        initialize();
+        initialize();                                        // Initialize form
     }
 
     private void initialize () {
@@ -114,12 +114,14 @@ public class MainForm extends JFrame {
             /// Welcome Panel ///
             // btnLoad_Main // <editor-fold desc="~btnLoad_Main~">
             if (e.getSource() == btnLoad_Main) {
+                // Show load database panel and hide welcome panel
                 loadDatabaseMain.setVisible(true);
                 welcomeMain.setVisible(false);
             }
             // End btnLoad_Main // </editor-fold>
             // btnCreate_Main // <editor-fold desc="~btnCreate_Main~">
             else if (e.getSource() == btnCreate_Main) {
+                // Show create database panel and hide welcome panel
                 createDatabaseMain.setVisible(true);
                 welcomeMain.setVisible(false);
             }
@@ -128,39 +130,53 @@ public class MainForm extends JFrame {
             /// Create Panel ///
             // btnBack_Create // <editor-fold desc="~btnBack_Create~">
             else if (e.getSource() == btnBack_Create) {
+                // Show welcome panel and hide create database panel
                 welcomeMain.setVisible(true);
                 createDatabaseMain.setVisible(false);
             }
             // End btnBack_Create // </editor-fold>
             // btnBrowse_Create // <editor-fold desc="~btnBrowse_Create~">
             else if (e.getSource() == btnBrowse_Create) {
+                // Create file chooser; Set dialog title; Set dialog to only show files with .sdb extension
                 JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Secure Database File", "sdb");
                 fileChooser.setDialogTitle("Database File Directory");
-                fileChooser.setFileFilter(filter);
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Secure Database File", "sdb"));
+
+                // Get user response from dialog
                 int response = fileChooser.showSaveDialog(null);
-                if (response == JFileChooser.APPROVE_OPTION) {
-                    txtDirectory_Create.setText(fileChooser.getSelectedFile().getAbsolutePath() + ".sdb");
+                if (response == JFileChooser.APPROVE_OPTION) { // If user selected directory
+                    // Check if selected file contains .sdb extension
+                    String currentFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    if (currentFilePath.contains(".sdb")) { // If selected directory contains .sdb extension
+                        // Set txtDirectory_Create to user selected directory
+                        txtDirectory_Create.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                    } else {
+                        // Set txtDirectory_Create to user selected directory + .sdb extension
+                        txtDirectory_Create.setText(fileChooser.getSelectedFile().getAbsolutePath() + ".sdb");
+                    }
                 }
             }
             // End btnBrowse_Create // </editor-fold>
             // btnCreate_Create // <editor-fold desc="~btnCreate_Create~">
             else if (e.getSource() == btnCreate_Create) {
-                if (txtDirectory_Create.getText().length() < 1)
+                if (txtDirectory_Create.getText().length() < 1) { // If no directory is selected
                     JOptionPane.showMessageDialog(createDatabaseMain, "Select database file directory.", "Warning", JOptionPane.WARNING_MESSAGE);
-                else if (pwdPassword_Create.getPassword().length < 6)
+                } else if (pwdPassword_Create.getPassword().length < 6) { // If pwdPassword_Create is less than 6 chars
                     JOptionPane.showMessageDialog(createDatabaseMain, "Password must be at least 6 characters.", "Warning", JOptionPane.WARNING_MESSAGE);
-                else if (!Arrays.equals(pwdPassword_Create.getPassword(), pwdConfirm_Create.getPassword()))
+                } else if (!Arrays.equals(pwdPassword_Create.getPassword(), pwdConfirm_Create.getPassword())) { // If pwdPassword_Create and pwdConfirm_Create  do not match
                     JOptionPane.showMessageDialog(createDatabaseMain, "Passwords do not match.", "Warning", JOptionPane.WARNING_MESSAGE);
-                else {
+                } else { // If all requirements met
                     try {
-                        StringBuilder password = new StringBuilder();
-                        for (char c : pwdPassword_Create.getPassword()) { password.append(c); }
-                        if (saveDatabase_Manage(new File(txtDirectory_Create.getText()), password.toString()))
+                        // Encrypt and save new database to directory in txtDirectory_Create
+                        if (saveDatabase_Manage(new File(txtDirectory_Create.getText()), charToString(pwdPassword_Create.getPassword()))) {
                             JOptionPane.showMessageDialog(createDatabaseMain, "Database has been created.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                        else
+                        } else {
+                            // If could not save database
                             JOptionPane.showMessageDialog(createDatabaseMain, "Could not create database.", "Error", JOptionPane.ERROR_MESSAGE);
-                    } catch (Exception ex) { JOptionPane.showMessageDialog(createDatabaseMain, "Could not create database.", "Error", JOptionPane.ERROR_MESSAGE); }
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(createDatabaseMain, "Could not create database.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
             // End btnCreate_Create // </editor-fold>
@@ -168,66 +184,90 @@ public class MainForm extends JFrame {
             /// Load Panel ///
             // btnBack_Load // <editor-fold desc="~btnBack_Load~">
             else if (e.getSource() == btnBack_Load) {
+                // Show welcome panel and hide load database panel
                 welcomeMain.setVisible(true);
                 loadDatabaseMain.setVisible(false);
             }
             // End btnBack_Load // </editor-fold>
             // btnBrowse_Load // <editor-fold desc="~btnBrowse_Load~">
             else if (e.getSource() == btnBrowse_Load) {
-                JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Secure Database File", "sdb");
-                fileChooser.setDialogTitle("Database File Directory");
-                fileChooser.setFileFilter(filter);
+                try {
+                    // Create file chooser; Set dialog title; Set dialog to only show files with .sdb extension
+                    JFileChooser fileChooser = new JFileChooser();
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter("Secure Database File", "sdb");
+                    fileChooser.setDialogTitle("Database File Directory");
+                    fileChooser.setFileFilter(filter);
 
-                int response = fileChooser.showOpenDialog(null);
-                if (response == JFileChooser.APPROVE_OPTION) {
-                    String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    if (filePath.contains(".sdb"))
-                        txtDirectory_Load.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                    else txtDirectory_Load.setText(filePath + ".sdb");
+                    // Get user response from dialog
+                    int response = fileChooser.showOpenDialog(null);
+                    if (response == JFileChooser.APPROVE_OPTION) { // If user selected directory
+                        // Check if selected file contains .sdb extension
+                        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                        if (filePath.contains(".sdb")) {
+                            // Set txtDirectory_Create to user selected directory
+                            txtDirectory_Load.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                        } else  {
+                            // Set txtDirectory_Create to user selected directory + .sdb extension
+                            txtDirectory_Load.setText(filePath + ".sdb");
+                        }
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(loadDatabaseMain,"Could not set directory.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             // End btnBrowse_Load // </editor-fold>
             // btnLoad_load <editor-fold desc="~btnLoad_Load~">
             else if (e.getSource() == btnLoad_Load) {
                 try {
+                    // Set global fileDirectory; Set global databasePassword
                     fileDirectory = new File(txtDirectory_Load.getText());
-                    StringBuilder password = new StringBuilder();
-                    for (char c : pwdPassword_Load.getPassword()) { password.append(c); }
-                    databasePassword = password.toString();
+                    databasePassword = charToString(pwdPassword_Load.getPassword());
 
+                    // Load database from txtDirectory_Load directory
                     loadDatabase_Manage(new File(txtDirectory_Load.getText()));
+                    // Refresh groups and entries UI elements
                     refreshGroups_Manage();
                     refreshSelectedGroup_Manage();
                     refreshEntries_Manage();
                     refreshSelectedEntry_Manage();
 
                     //setSize(860, 500);
+                    // Show manage panel and hide load database panel
                     loadDatabaseMain.setVisible(false);
                     manageDatabaseMain.setVisible(true);
-                } catch (FileNotFoundException ex) { JOptionPane.showMessageDialog(loadDatabaseMain,"Could not open database.", "Error", JOptionPane.ERROR_MESSAGE); } catch (Exception ex) { JOptionPane.showMessageDialog(loadDatabaseMain,"Could not decrypt database.", "Error", JOptionPane.ERROR_MESSAGE); }
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(loadDatabaseMain,"Could not open database.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(loadDatabaseMain,"Could not decrypt database.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             // End btnLoad_Load // </editor-fold>
 
             /// Manage Panel ///
             // btnCopy_Manage // <editor-fold desc="~btnCopy_Manage~">
             else if (e.getSource() == btnCopy_Manage) {
-                StringBuilder password = new StringBuilder();
-                for (char c : pwdPassword_Manage.getPassword()) { password.append(c); }
-                final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(password.toString()), null);
+                try {
+                    // Get default clipboard toolkit; Copy pwdPassword_Manage to clipboard
+                    final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(new StringSelection(charToString(pwdPassword_Manage.getPassword())), null);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(createDatabaseMain, "Could not copy password clipboard.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             // End btnCopy_Manage // </editor-fold>
             // btnShow_Manage // <editor-fold desc="~btnShow_Manage~">
             else if (e.getSource() == btnShow_Manage) {
                 Icon icon;
                 if (showPassword_Manage) {
+                    // Set icon object to eye; Set echo char to a dot
                     icon = new ImageIcon("resources/eye-unchecked-30.png");
                     pwdPassword_Manage.setEchoChar('•');
                 } else {
+                    // Set icon object to eye with check; Clear echo char
                     icon = new ImageIcon("resources/eye-checked-30.png");
                     pwdPassword_Manage.setEchoChar((char)0);
                 }
+                // Set btnShow_Manage icon to icon object; Change showPassword_Manage
                 btnShow_Manage.setIcon(icon);
                 showPassword_Manage = !showPassword_Manage;
             }
@@ -235,31 +275,36 @@ public class MainForm extends JFrame {
             // btnSave_Manage // <editor-fold desc="~btnSave_Manage~">
             else if (e.getSource() == btnSave_Manage) {
                 try {
-                    StringBuilder passwordString = new StringBuilder();
-                    for (char c : pwdPassword_Manage.getPassword()) {
-                        passwordString.append(c);
-                    }
-                    database.addEntry(new Entry(database.getGroups().get(currentGroup_Manage).get(currentEntry_Manage).getName(), txtURL_Manage.getText(), txtUsername_Manage.getText(), passwordString.toString(), txtEmail_Manage.getText(), txtNotes_Manage.getText()), currentGroup_Manage, currentEntry_Manage);
+                    // Add entry with new data excluding entry name
+                    database.addEntry(new Entry(database.getGroups().get(currentGroup_Manage).get(currentEntry_Manage).getName(), txtURL_Manage.getText(), txtUsername_Manage.getText(), charToString(pwdPassword_Manage.getPassword()), txtEmail_Manage.getText(), txtNotes_Manage.getText()), currentGroup_Manage, currentEntry_Manage);
 
+                    // Save database to current directory
                     if (saveDatabase_Manage(fileDirectory, database)) {
+                        // Refresh entries UI elements
                         refreshEntries_Manage();
                         refreshSelectedEntry_Manage();
 
                         JOptionPane.showMessageDialog(createDatabaseMain, "Entry has been saved.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                    } else
+                    } else {
                         JOptionPane.showMessageDialog(createDatabaseMain, "Could not save entry.", "Error", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception ex) { JOptionPane.showMessageDialog(createDatabaseMain, "Could not save entry.", "Error", JOptionPane.ERROR_MESSAGE); }
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(createDatabaseMain, "Could not save entry.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             // End btnSave_Manage // </editor-fold>
             // btnAddEntry_Manage // <editor-fold desc="~btnAddEntry_Manage~">
             else if (e.getSource() == btnAddEntry_Manage) {
                 try {
+                    // Create new entry with default name and empty data; Add entry to database
                     Entry newEntry = new Entry("New Entry", "", "", "", "", "");
                     database.addEntry(newEntry, currentGroup_Manage);
 
+                    // Save database to current directory; Load database from current directory
                     saveDatabase_Manage(fileDirectory, database);
                     loadDatabase_Manage(fileDirectory);
 
+                    // Refresh groupsS and entries UI elements
                     refreshGroups_Manage();
                     refreshSelectedGroup_Manage();
                     refreshEntries_Manage();
@@ -270,11 +315,14 @@ public class MainForm extends JFrame {
             // btnAddGroup_Manage // <editor-fold desc="~btnAddGroup_Manage~">
             else if (e.getSource() == btnAddGroup_Manage) {
                 try {
+                    // Add group to database
                     database.addGroup();
 
+                    // Save database to current directory; Load database from current directory
                     saveDatabase_Manage(fileDirectory, database);
                     loadDatabase_Manage(fileDirectory);
 
+                    // Refresh groups and entries UI elements
                     refreshGroups_Manage();
                     refreshSelectedGroup_Manage();
                     refreshEntries_Manage();
@@ -284,16 +332,20 @@ public class MainForm extends JFrame {
             // End btnAddGroup_Manage // </editor-fold>
             // btnDeleteEntry_Manage // <editor-fold desc="~btnDeleteEntry_Manage~">
             else if (e.getSource() == btnDeleteEntry_Manage) {
+                // Show confirmation dialog and store user response
                 int result = JOptionPane.showConfirmDialog(mainFormPanel, "Are you sure you want to delete this entry?", "Confirm Deletion.",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (result == JOptionPane.YES_OPTION) {
+                if (result == JOptionPane.YES_OPTION) { // If user response is yes
                     try {
-                        database.removeEntry(currentGroup_Manage, lstEntries_Manage.getSelectedIndex());
+                        // Remove database entry from current group and current selected index; Change currentEntry_Manage
+                        database.removeEntry(currentGroup_Manage, currentEntry_Manage);
                         currentEntry_Manage -= currentEntry_Manage;
 
+                        // Save database to current directory; Load database from current directory
                         saveDatabase_Manage(fileDirectory, database);
                         loadDatabase_Manage(fileDirectory);
 
+                        // Refresh groups and entries UI elements
                         refreshGroups_Manage();
                         refreshSelectedGroup_Manage();
                         refreshEntries_Manage();
@@ -304,16 +356,20 @@ public class MainForm extends JFrame {
             // End btnDeleteEntry_Manage // </editor-fold>
             // btnDeleteGroup_Manage // <editor-fold desc="~btnDeleteGroup_Manage~">
             else if (e.getSource() == btnDeleteGroup_Manage) {
+                // Show confirmation dialog and store user response
                 int result = JOptionPane.showConfirmDialog(mainFormPanel, "Are you sure you want to delete this group?", "Confirm Deletion.",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (result == JOptionPane.YES_OPTION) {
+                if (result == JOptionPane.YES_OPTION) { // If user response is yes
                     try {
+                        // Remove database group from current group; Change currentGroup_Manage
                         database.removeGroup(currentGroup_Manage);
                         currentGroup_Manage -= currentGroup_Manage;
 
+                        // Save database to current directory; Load database from current directory
                         saveDatabase_Manage(fileDirectory, database);
                         loadDatabase_Manage(fileDirectory);
 
+                        // Refresh groups and entries UI elements
                         refreshGroups_Manage();
                         refreshSelectedGroup_Manage();
                         refreshEntries_Manage();
@@ -325,6 +381,7 @@ public class MainForm extends JFrame {
             // btnSaveEntryName_Manage // <editor-fold desc="~btnSaveEntryName_Manage~"?
             else if (e.getSource() == btnSaveEntryName_Manage) {
                 try {
+                    // Create new entry with data from JTextFields
                     Entry newEntry = new Entry(
                             txtEntryName_Manage.getText(),
                             database.getEntry(currentGroup_Manage, currentEntry_Manage).getUrl(),
@@ -333,11 +390,14 @@ public class MainForm extends JFrame {
                             database.getEntry(currentGroup_Manage, currentEntry_Manage).getEmail(),
                             database.getEntry(currentGroup_Manage, currentEntry_Manage).getNotes()
                     );
+                    // Add entry to database
                     database.addEntry(newEntry, currentGroup_Manage, currentEntry_Manage);
 
+                    // Save database to current directory; Load database from current directory
                     saveDatabase_Manage(fileDirectory, database);
                     loadDatabase_Manage(fileDirectory);
 
+                    // Refresh groups and entries UI elements
                     refreshGroups_Manage();
                     refreshSelectedGroup_Manage();
                     refreshEntries_Manage();
@@ -348,11 +408,14 @@ public class MainForm extends JFrame {
             // btnSaveGroupName_Manage // <editor-fold desc="~btnSaveGroupName_Manage~"?
             else if (e.getSource() == btnSaveGroupName_Manage) {
                 try {
+                    // Change currently selected groups name to text from txtGroupName_Manage
                     database.setGroupNamesIndex(currentGroup_Manage, txtGroupName_Manage.getText());
 
+                    // Save database to current file directory; Load database from current directory
                     saveDatabase_Manage(fileDirectory, database);
                     loadDatabase_Manage(fileDirectory);
 
+                    // Refresh groups and entries UI elements
                     refreshGroups_Manage();
                     refreshSelectedGroup_Manage();
                     refreshEntries_Manage();
@@ -389,11 +452,13 @@ public class MainForm extends JFrame {
         ///// End Action Listeners ///// </editor-fold>
 
         // List Selection Manager // <editor-fold desc="~List Selection Manager~">
-        ListSelectionListener listSelectionListener = e -> {
+        ListSelectionListener listSelectionListener = e -> { // When change in list's selected index
             // lstGroups_Manage // <editor-fold desc="~lstGroups_Manage~">
             if (e.getSource() == lstGroups_Manage) {
                 if (lstGroups_Manage.getSelectedIndex() >= 0) {
                     currentGroup_Manage = lstGroups_Manage.getSelectedIndex();
+
+                    // Refresh selected group and entries UI elements
                     refreshSelectedGroup_Manage();
                     refreshEntries_Manage();
                 }
@@ -403,20 +468,25 @@ public class MainForm extends JFrame {
             else if (e.getSource() == lstEntries_Manage) {
                 if (lstEntries_Manage.getSelectedIndex() >= 0) {
                     currentEntry_Manage = lstEntries_Manage.getSelectedIndex();
+
+                    // Refresh selected entry UI element
                     refreshSelectedEntry_Manage();
                 }
             }
             // End lstEntries_Manage // </editor-fold>
         };
+
+        // Manage Panel //
         lstGroups_Manage.addListSelectionListener(listSelectionListener);
         lstEntries_Manage.addListSelectionListener(listSelectionListener);
         // End List Selection Manager // </editor-fold>
 
         ///// Mouse Events ///// <editor-fold desc="~Mouse Events~">
+        // Default Buttons //
         Color defaultButtonColor = new Color(77, 81, 83);
         Color hoveredButtonColor = new Color(87, 91, 93);
 
-        // Manage Panel //
+        // Manage Panel Buttons //
         Color defaultManageButtonColor = new Color(30, 30, 30);
         Color hoveredManageButtonColor = new Color(28, 28, 28);
 
@@ -428,8 +498,12 @@ public class MainForm extends JFrame {
                         e.getComponent() == btnAddEntry_Manage    ||
                         e.getComponent() == btnDeleteGroup_Manage ||
                         e.getComponent() == btnDeleteEntry_Manage
-                ) e.getComponent().setBackground(hoveredManageButtonColor);
-                else e.getComponent().setBackground(hoveredButtonColor);
+                )  { // If button is add or delete in manage panel
+                    e.getComponent().setBackground(hoveredManageButtonColor);
+                }
+                else { // If other button
+                    e.getComponent().setBackground(hoveredButtonColor);
+                }
             }
 
             @Override
@@ -439,8 +513,12 @@ public class MainForm extends JFrame {
                         e.getComponent() == btnAddEntry_Manage    ||
                         e.getComponent() == btnDeleteGroup_Manage ||
                         e.getComponent() == btnDeleteEntry_Manage
-                ) e.getComponent().setBackground(defaultManageButtonColor);
-                else e.getComponent().setBackground(defaultButtonColor);
+                ) { // If button is add or delete in manage panel
+                    e.getComponent().setBackground(defaultManageButtonColor);
+                }
+                else { // If other button
+                    e.getComponent().setBackground(defaultButtonColor);
+                }
             }
         };
 
@@ -497,13 +575,16 @@ public class MainForm extends JFrame {
     private void refreshGroups_Manage () {
         List<List<Entry>> groups = database.getGroups();
 
+        // If groups exists
         if (groups.size() > 0) {
             DefaultListModel<String> groupModel = new DefaultListModel<>();
 
+            // For each group name, add name to groupModel
             for (String groupName : database.getGroupNames()) {
                 groupModel.addElement(groupName);
             }
 
+            // Set lstGroups_Manage model to groupModel
             lstGroups_Manage.setModel(groupModel);
         }
     }
@@ -511,6 +592,7 @@ public class MainForm extends JFrame {
 
     ///// refreshSelectedGroup_Manage() ///// <editor-fold desc="~refreshSelectedGroup_Manage()~">
     private void refreshSelectedGroup_Manage () {
+        // Set lstGroups_Manage selected index to current selected group index; Set txtGroupName_Manage text to current group name
         lstGroups_Manage.setSelectedIndex(currentGroup_Manage);
         txtGroupName_Manage.setText(database.getGroupNamesIndex(currentGroup_Manage));
     }
@@ -519,14 +601,18 @@ public class MainForm extends JFrame {
     ///// refreshEntries_Manage() ///// <editor-fold desc="~refreshEntries_Manage()~">
     private void refreshEntries_Manage () {
         List<List<Entry>> groups = database.getGroups();
+
+        // If entries exists in group
         if (groups.get(currentGroup_Manage).size() > 0) {
             //DefaultListModel<String> entryModel = (DefaultListModel<String>) lstEntries_Manage.getModel();
             DefaultListModel<String> entryModel = new DefaultListModel<>();
 
+            // For each entry in current group, add name to entryModel
             for (int i = 0; i < groups.get(currentGroup_Manage).size(); i++) {
                 entryModel.addElement(groups.get(currentGroup_Manage).get(i).getName());
             }
 
+            // Set lstEntries_Manage mode to entryModel; Set lstEntries_Manage selected index to currentEntry_Manage
             lstEntries_Manage.setModel(entryModel);
             lstEntries_Manage.setSelectedIndex(currentEntry_Manage);
         }
@@ -535,6 +621,7 @@ public class MainForm extends JFrame {
 
     ///// refreshSelectedEntry_Manage() ///// <editor-fold desc="~refreshSelectedEntry_Manage()~">
     private void refreshSelectedEntry_Manage () {
+        // Set JTextField in manage panel to data in current selected group and entry
         txtUsername_Manage.setText(database.getEntry(currentGroup_Manage, currentEntry_Manage).getUsername());
         txtEmail_Manage.setText(database.getEntry(currentGroup_Manage, currentEntry_Manage).getEmail());
         pwdPassword_Manage.setText(database.getEntry(currentGroup_Manage, currentEntry_Manage).getPassword());
@@ -546,16 +633,20 @@ public class MainForm extends JFrame {
 
     ///// loadDatabase_Manage() ///// <editor-fold desc="~loadDatabase_Manage()~">
     private void loadDatabase_Manage (File loadDirectory) throws Exception {
+        // Create Scanner for loadDirectory
         Scanner scanner = new Scanner(loadDirectory);
+        // Read file from loadDirectory and write to encryptedJson StringBuilder string
         StringBuilder encryptedJson = new StringBuilder();
         while (scanner.hasNextLine()) {
             encryptedJson.append(scanner.nextLine());
         }
-        scanner.close();
+        scanner.close(); // Close Scanner
 
+        // Create encryption object with current database password; Decrypt encryptedJson
         Encryption crypt = new Encryption(databasePassword);
         String jsonData = crypt.decryptString(encryptedJson.toString());
 
+        // Set current database to Gson converted jsonData
         Gson gson = new Gson();
         database = gson.fromJson(jsonData, Database.class);
     }
@@ -564,12 +655,21 @@ public class MainForm extends JFrame {
     ///// saveDatabase_Manage() ///// <editor-fold desc="~saveDatabase_Manage()~">
     private boolean saveDatabase_Manage (File saveDirectory, String databasePassword) throws Exception {
         Gson gson = new Gson();
-        if (saveDirectory.exists()) { if (!saveDirectory.delete()) return false; }
-        else { if (!saveDirectory.createNewFile()) return false; }
+        if (saveDirectory.exists()) { // If file exists
+            if (!saveDirectory.delete()) { // If file could not be deleted
+                return false;
+            }
+        } else { // If file does not exist
+            if (!saveDirectory.createNewFile()) { // If could not create new file
+                return false;
+            }
+        }
 
+        // Create new database converted with Gson; Encrypt JSON string with encryption object
         String databaseJson = gson.toJson(new Database());
         String encryptedDatabaseJson = new Encryption(databasePassword).encryptString(databaseJson);
 
+        // Write encrypted JSON to directory
         FileWriter dataWriter = new FileWriter(saveDirectory);
         dataWriter.write(encryptedDatabaseJson);
         dataWriter.close();
@@ -589,4 +689,15 @@ public class MainForm extends JFrame {
         return true;
     }
     ///// End saveDatabase_Manage() ///// </editor-fold>
+
+    ///// charToString() ///// <editor-fold desc="~charToString()~">
+    private String charToString (char[] charArray) {
+        StringBuilder newString = new StringBuilder();
+        // For each char in charArray, append to newString
+        for (char c : charArray) {
+            newString.append(c);
+        }
+        return newString.toString();
+    }
+    ///// End charToString() ///// </editor-fold>
 }

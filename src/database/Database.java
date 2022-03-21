@@ -34,22 +34,45 @@ public class Database {
     }
 
     ///// Get Functions ///// <editor-fold desc="~Get Functions~">
-    public List<List<Entry>> getGroups () { return groups; }
-    public List<String> getGroupNames () { return groupNames; }
-    public String getGroupNamesIndex (int nameIndex) { return groupNames.get(nameIndex); }
-    public Entry getEntry (int groupIndex, int entryIndex) { return groups.get(groupIndex).get(entryIndex); }
+    public List<List<Entry>> getGroups () {
+        return groups;
+    }
+
+    public List<String> getGroupNames () {
+        return groupNames;
+    }
+
+    public String getGroupNamesIndex (int nameIndex) {
+        return groupNames.get(nameIndex);
+    }
+
+    public Entry getEntry (int groupIndex, int entryIndex) {
+        return groups.get(groupIndex).get(entryIndex);
+    }
     ///// End Get Functions ///// </editor-fold>
 
     ///// Set Functions ///// <editor-fold desc="~Set Functions~">
-    public void setGroupNames (List<String> pGroupNames) { groupNames = pGroupNames; }
-    public void setGroupNamesIndex (int groupNamesIndex, String pName) { groupNames.set(groupNamesIndex, pName); }
-    public void setGroups (List<List<Entry>> pGroups) { groups = pGroups; }
+    public void setGroupNames (List<String> pGroupNames) {
+        groupNames = pGroupNames;
+    }
+
+    public void setGroupNamesIndex (int groupNamesIndex, String pName) {
+        groupNames.set(groupNamesIndex, pName);
+    }
+
+    public void setGroups (List<List<Entry>> pGroups) {
+        groups = pGroups;
+    }
     ///// End Set Functions ///// </editor-fold>
 
 
     ///// addEntry() ///// <editor-fold desc="~addEntry()~">
-    public void addEntry (Entry pEntry, int groupIndex) { groups.get(groupIndex).add(pEntry); }
-    public void addEntry (Entry pEntry, int groupIndex, int entryIndex) { groups.get(groupIndex).set(entryIndex, pEntry); }
+    public void addEntry (Entry pEntry, int groupIndex) {
+        groups.get(groupIndex).add(pEntry);
+    }
+    public void addEntry (Entry pEntry, int groupIndex, int entryIndex) {
+        groups.get(groupIndex).set(entryIndex, pEntry);
+    }
     ///// End addEntry() ///// </editor-fold>
 
     ///// addGroup() ///// <editor-fold desc="~addGroup()~">
@@ -63,7 +86,9 @@ public class Database {
 
 
     ///// removeEntry() ///// <editor-fold desc="~removeEntry()~">
-    public void removeEntry (int groupIndex, int entryIndex) { groups.get(groupIndex).remove(entryIndex); }
+    public void removeEntry (int groupIndex, int entryIndex) {
+        groups.get(groupIndex).remove(entryIndex);
+    }
     ///// End removeEntry() ///// </editor-fold>
 
     ///// removeGroup() ///// <editor-fold desc="~removeGroup()~">
